@@ -1,0 +1,160 @@
+<link rel="stylesheet" href="<?php echo $sStaticRoot ?>/backend/css/HrShop.css" type="text/css" />
+<style>.indexwrap .tit_siller{padding-top:6px;}
+        .timeline_noresult ul li{   font-size: 15px; line-height: 30px; }
+        .timeline_noresult ul li span{   float: right;  }
+        .timeline_noresult ul li span a {  text-decoration: underline;  color: Orange;  }
+</style>
+<div id="wrap" class="indexwrap" style="width: 100%">
+    <table cellpadding="0" cellspacing="0" width="95%" style="margin-left: 15px; margin-bottom: 50px;">
+        <tr>
+            <td style="width: 65%; padding-right: 10px; vertical-align: top;">
+                <div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>轮播图</strong></h3>
+                    </div>
+                    <div id="main1" style="height: 300px;"></div>
+                </div>
+            </td>
+            <td style="width: 35%; padding-left: 10px; vertical-align: top;">
+                <div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>快速入口</strong></h3>
+                    </div>
+                    <div class="timeline_noresult">
+                        <ul>                            
+                            <li><a href="/company/employer/index">公司架构设置</a></li>
+                            <li><a href="/company/employee/list">公司员工列表</a></li>
+                            <li><a href="/company/physical/record">员工体捡记录</a></li>
+                            <li><a href="/company/physical/plan">员工体检计划</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 65%; padding-right: 10px; vertical-align: top;"><div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>公司信息 </strong>
+                        </h3>
+                    </div>
+                    <div style="height: 300px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+                            <colgroup>
+                                <col style="width: 15%" />
+                                <col style="width: 35%" />
+                                <col style="width: 15%" />
+                                <col style="width: 35%" />
+                            </colgroup>
+                            <tr class="item">
+                                <th>公司名称：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblNameCN"><?php echo $aCompany['sRealName']?></span>
+                                </td>
+                                <th>公司账号：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblComNo"><?php echo $aCompany['sUserName']?></span>
+                                </td>
+                            </tr>
+                            <tr class="item">
+                                <th> 联系人：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblLinkMan"><?php echo $aCompany['sHrName']?></span>
+                                </td>
+                                <th>联系电话：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblMobile"><?php echo $aCompany['sMobile']?></span>
+                                </td>
+                            </tr>
+                            <tr class="item">
+                                <th>公司邮箱：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblEmail"><?php echo $aCompany['sEmail']?></span>
+                                </td>
+                                <th>公司网址：</th>
+                                <td colspan="3">
+                                    <span id="ContentPlaceHolder1_content_lblWeb"><?php echo $aCompany['sCoWebsite']?></span>
+                                </td>
+                            </tr>
+                            <tr class="item">
+                                <th>通讯地址：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblAddress"><?php echo $aCompany['sCoAddress']?></span>
+                                </td>
+                                <th>邮政编码：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblPostNum"><?php echo $aCompany['sCoZipCode']?></span>
+                                </td>
+                            </tr>
+                            <tr class="item">
+                                <th>公司电话：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblPhone"><?php echo $aCompany['sCoMobile']?></span>
+                                </td>
+                                <th>公司传真：</th>
+                                <td>
+                                    <span id="ContentPlaceHolder1_content_lblFax"><?php echo $aCompany['sCoFex']?></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+            <td style="width: 35%; padding-left: 10px; vertical-align: top;">
+                <div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>数据汇总</strong></h3>
+                    </div>
+                    <div class="timeline_noresult">
+                        <ul>
+                            <li>
+                                <a href="/company/employee/list">员工总数</a>
+                                <span>
+                                    <a href="/company/employee/list">
+                                        <span id=""><?php echo $aStatistics['sEmployeeNumber']?></span>
+                                    </a>
+                                </span>
+                            </li>
+                            <li>
+                                <a href="/company/physical/monthly">每月订单数</a>
+                                <span>
+                                    <a href="/company/physical/monthly">
+                                        <span id=""><?php echo $aStatistics['sMonthlyNumber']?></span>
+                                    </a>
+                                </span>
+                            </li>
+                            <li>
+                                <a href="/company/physical/serious">大病检出</a>
+                                <span>
+                                    <a href="/company/physical/serious">
+                                        <span id=""><?php echo $aStatistics['sSeriousNumber']?></span>
+                                    </a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<script src="<?php echo $sStaticRoot ?>/js/echart/echarts-plain.js" type="text/javascript"></script>
+<script src="<?php echo $sStaticRoot ?>/js/echart/echarts-help.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        var Legend1 = ["实际到检数量","体检安排数量"];
+        var XAxis1 =[{"type":"category","data":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]}];
+        var Series1 = [{"name":"实际到检数量","type":"bar","data":[83235.0,28962.01,73274.0,48522.0,40572.0,35678.0,20552.0,0.0,0.0,0.0,0.0,0.0]},{"name":"体检安排数量","type":"bar","data":[189069.0,48898.0,102896.0,62800.0,57392.0,46315.0,36044.0,0.0,0.0,0.0,0.0,0.0]}];
+        ShowEChartLineOrBar("main1", XAxis1, Series1, Legend1);
+
+
+        var Data2 = [{"name":"入职体检","value":121736.0},{"name":"拓展产品（非标准产品）","value":455641.05},{"name":"拓展产品（标准产品）","value":500709.0}];
+        var Legend2 = ["","","入职体检"];
+        ShowEChartPie("main2", Data2, Legend2);
+    });
+</script>

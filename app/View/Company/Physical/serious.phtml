@@ -1,0 +1,33 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pheader clearfix">大病检出人员列表</div>
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>            
+            <th class="text-center">订购人</th>
+            <th class="text-center">体检产品</th>
+            <th class="text-center">安排时间</th>
+            <th class="text-center">体检日期</th>
+            <th class="text-center">大病检出说明</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aProduct['iTotal'] > 0) {
+            foreach ($aProduct['aList'] as $key => $aUser) { ?>
+                <tr>                   
+                    <td class="text-center"><?php echo $aUser['sRealName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sProductName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sReserveTime'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sPhysicalTime'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sSeriousRemark'] ?></td>                    
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aProduct['aPager']) ? $aProduct['aPager'] : '' ?>
+</div>

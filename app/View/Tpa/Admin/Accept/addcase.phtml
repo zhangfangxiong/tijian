@@ -1,0 +1,409 @@
+<div class="pheader clearfix">
+    理赔受理
+</div>
+<div class="pbody clearfix">
+    <div class="employee_info col-sm-7">
+        <div class="pheader clearfix">
+            雇员详细信息
+        </div>
+        <table class="table table-hover table-responsive table-bordered">
+            <tr>
+                <td>员工姓名</td>
+                <td><?php echo !empty($aEmployee['sRealName']) ? $aEmployee['sRealName'] : '' ?></td>
+                <td>性别</td>
+                <td><?php echo !empty($aEmployee['sSex']) ? $aEmployee['sSex'] : '' ?></td>
+            </tr>
+            <tr>
+                <td>出生日期</td>
+                <td><?php echo !empty($aEmployee['sBirthDate']) ? $aEmployee['sBirthDate'] : '' ?></td>
+                <td>有无医保</td>
+                <td><?php echo !empty($aEmployee['sIsMedicalInsurance']) ? $aEmployee['sIsMedicalInsurance'] : '' ?></td>
+            </tr>
+            <tr>
+                <td>医保属地</td>
+                <td><?php echo !empty($aEmployee['sMedicalInsurancePrivinceID']) ? $aEmployee['sMedicalInsurancePrivinceID'] : '' ?><?php echo !empty($aEmployee['sMedicalInsuranceCityID']) ? $aEmployee['sMedicalInsuranceCityID'] : '' ?></td>
+                <td>工作属地</td>
+                <td><?php echo !empty($aEmployee['sJobPrivinceID']) ? $aEmployee['sJobPrivinceID'] : '' ?><?php echo !empty($aEmployee['sJobCityID']) ? $aEmployee['sJobCityID'] : '' ?></td>
+            </tr>
+            <tr>
+                <td>所属公司编号</td>
+                <td><?php echo !empty($aEmployee['sCompanyCode']) ? $aEmployee['sCompanyCode'] : '' ?></td>
+                <td>所属公司名称</td>
+                <td><?php echo !empty($aEmployee['sCompanyName']) ? $aEmployee['sCompanyName'] : '' ?></td>
+            </tr>
+            <tr>
+                <td>参保身份类别</td>
+                <td><?php echo !empty($aEmployee['sType']) ? $aEmployee['sType'] : '' ?></td>
+                <td>参保身份
+                </td>
+                <td><?php echo !empty($aEmployee['sLevel']) ? $aEmployee['sLevel'] : '' ?></td>
+            </tr>
+            <tr>
+                <td>员工备注</td>
+                <td colspan="3"><?php echo !empty($aEmployee['sRemark']) ? $aEmployee['sRemark'] : '' ?></td>
+            </tr>
+        </table>
+        <div class="pheader clearfix">
+            雇员历史投保记录
+        </div>
+        <table class="table table-hover table-responsive table-bordered">
+            <tr>
+                <th>保单号</th>
+                <th>生效日期</th>
+                <th>终止日期</th>
+                <!--
+                <th>保单状态</th>
+                <th>是否参与理赔</th>
+                -->
+            </tr>
+            <?php if (!empty($aClaimsplan)) {
+                foreach ($aClaimsplan as $key => $value) {
+                    ?>
+                    <tr>
+                        <td><?php echo !empty($value['sCode']) ? $value['sCode'] : '' ?></td>
+                        <td><?php echo !empty($value['sStartDate']) ? $value['sStartDate'] : '' ?></td>
+                        <td><?php echo !empty($value['sEndDate']) ? $value['sEndDate'] : '' ?></td>
+                        <!--
+                        <td><?php echo (date('Y-m-d', time()) > $value['sStartDate'] && date('Y-m-d', time()) < $value['sEndDate']) ? '当前保单' : '历史保单' ?></td>
+                        <td>这个不知道怎么弄</td>
+                        -->
+                    </tr>
+                <?php
+                }
+            } ?>
+        </table>
+        <div class="pheader clearfix">
+            问题案件记录
+        </div>
+        <table class="table table-hover table-responsive table-bordered">
+            <tr>
+                <th>问题编号</th>
+                <th>快递号</th>
+                <th>问题类型</th>
+                <th>备注</th>
+                <th>入问题岗时间</th>
+                <th>处理状态</th>
+                <th>处理结果</th>
+            </tr>
+            <?php if (!empty($aCase)) {
+                foreach ($aCase as $key => $value) {
+                    ?>
+                    <tr>
+                        <td><?php echo !empty($value['sCode']) ? $value['sCode'] : '' ?></td>
+                        <td><?php echo !empty($value['sExpressCode']) ? $value['sExpressCode'] : '' ?></td>
+                        <td><?php echo !empty($aErrorType[$value['iType']]) ? $aErrorType[$value['iType']] : '' ?></td>
+                        <td><?php echo !empty($value['sRemark']) ? $value['sRemark'] : '' ?></td>
+                        <td><?php echo !empty($value['iCreateTime']) ? date('Y-m-d H:i:s', $value['iCreateTime']) : '' ?></td>
+                        <td><?php echo !empty($aErrorStatus[$value['iStatus']]) ? $aErrorStatus[$value['iStatus']] : '' ?></td>
+                        <td><?php echo !empty($value['sTreatedRemark']) ? $value['sTreatedRemark'] : '' ?></td>
+                    </tr>
+                <?php
+                }
+            } ?>
+        </table>
+
+    </div>
+    <div class="addcase col-sm-5">
+        <?php if (!empty($iOperationType) && $iOperationType == 1) {
+            ?>
+            <form id="myform" method="post" action="<?php echo $sAcceptAddCaseUrl ?>">
+                <div class="pbody clearfix">
+                    <div class="form-group clearfix">
+                        <label for="sExpressCode" class="col-sm-3 control-label"> <span
+                                class="tubiao">*</span>快递单号：</label>
+
+                        <div class="col-sm-9">
+                            <input name="sExpressCode" id="sExpressCode" validate="!required:true" placeholder="请填写快递单号"
+                                   type="text"
+                                   value="<?php echo !empty($aThisCase['sExpressCode']) ? $aThisCase['sExpressCode'] : '' ?>"
+                                   class="form-control input-validate">
+                            <span class="validate_checktip"></span>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label for="sEmployeeRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span>发票张数：</label>
+
+                        <div class="col-sm-9">
+                            <input name="iInvoiceNum" id="iInvoiceNum" validate="!digit:true" placeholder="请填写发票张数"
+                                   type="text"
+                                   value="<?php echo !empty($aThisCase['iInvoiceNum']) ? $aThisCase['iInvoiceNum'] : '' ?>"
+                                   class="form-control input-validate">
+                            <span class="validate_checktip"></span>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>受理金额：</label>
+
+                        <div class="col-sm-9">
+                            <input name="iMoney" id="iMoney" validate="!float:true" placeholder="请填写受理金额" type="text"
+                                   value="<?php echo !empty($aThisCase['iMoney']) ? $aThisCase['iMoney'] : '' ?>"
+                                   class="form-control input-validate">
+                            <span class="validate_checktip"></span>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label for="sMobile" class="col-sm-3 control-label"> <span
+                                class="tubiao">*</span>是否医疗关系转移：</label>
+
+                        <div class="col-sm-9">
+                            <?php if (!empty($aYesOrNo2)) {
+                                foreach ($aYesOrNo2 as $key => $value) {
+                                    ?>
+                                    <label class="radio-inline">
+                                        <input <?php echo $key == 1 ? 'checked' : '' ?> type="radio"
+                                                                                        name="iIfMedicalTransfer"
+                                                                                        value="<?php echo $key ?>"> <?php echo $value ?>
+                                    </label>
+                                <?php
+                                }
+                            } ?>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label for="sMobile" class="col-sm-3 control-label"> <span
+                                class="tubiao">*</span>赔付明细分割单：</label>
+
+                        <div class="col-sm-9">
+                            <?php if (!empty($aYesOrNo2)) {
+                                foreach ($aYesOrNo2 as $key => $value) {
+                                    ?>
+                                    <label class="radio-inline">
+                                        <input <?php echo $key == 1 ? 'checked' : '' ?> type="radio" name="iIfPayDetail"
+                                                                                        value="<?php echo $key ?>"> <?php echo $value ?>
+                                    </label>
+                                <?php
+                                }
+                            } ?>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>是否退发票：</label>
+
+                        <div class="col-sm-9">
+                            <?php if (!empty($aYesOrNo2)) {
+                                foreach ($aYesOrNo2 as $key => $value) {
+                                    ?>
+                                    <label class="radio-inline">
+                                        <input <?php echo $key == 1 ? 'checked' : '' ?> type="radio"
+                                                                                        name="iIfRefundInvoice"
+                                                                                        value="<?php echo $key ?>"> <?php echo $value ?>
+                                    </label>
+                                <?php
+                                }
+                            } ?>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>优先级：</label>
+
+                        <div class="col-sm-9">
+                            <?php if (!empty($aPriority)) {
+                                foreach ($aPriority as $key => $value) {
+                                    ?>
+                                    <label class="radio-inline">
+                                        <input <?php echo $key == 1 ? 'checked' : '' ?> type="radio" name="iPriority"
+                                                                                        value="<?php echo $key ?>"> <?php echo $value ?>
+                                    </label>
+                                <?php
+                                }
+                            } ?>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="iID" value="<?php echo !empty($iID) ? $iID : ''; ?>">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#matchModal">标示问题
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="history.back()">取消</button>
+                </div>
+            </form>
+        <?php
+        } elseif (!empty($iOperationType) && $iOperationType == 2) {
+            ?>
+            <div class="pbody clearfix">
+                <div class="form-group clearfix">
+                    <label for="sExpressCode" class="col-sm-3 control-label"> <span class="tubiao">*</span>快递单号：</label>
+
+                    <div class="col-sm-9">
+                        <?php echo !empty($aThisCase['sExpressCode']) ? $aThisCase['sExpressCode'] : '' ?>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="sEmployeeRealName" class="col-sm-3 control-label"> <span
+                            class="tubiao">*</span>发票张数：</label>
+
+                    <div class="col-sm-9">
+                        <?php echo !empty($aThisCase['iInvoiceNum']) ? $aThisCase['iInvoiceNum'] : '' ?>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>受理金额：</label>
+
+                    <div class="col-sm-9">
+                        <?php echo !empty($aThisCase['iMoney']) ? $aThisCase['iMoney'] : '' ?>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>是否医疗关系转移：</label>
+
+                    <div class="col-sm-9">
+                        <?php echo !empty($aYesOrNo2[$aThisCase['iIfMedicalTransfer']]) ? $aYesOrNo2[$aThisCase['iIfMedicalTransfer']] : '' ?>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>赔付明细分割单：</label>
+
+                    <div class="col-sm-9">
+                        <?php echo !empty($aYesOrNo2[$aThisCase['iIfPayDetail']]) ? $aYesOrNo2[$aThisCase['iIfPayDetail']] : '' ?>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>是否退发票：</label>
+
+                    <div class="col-sm-9">
+                        <?php echo !empty($aYesOrNo2[$aThisCase['iIfRefundInvoice']]) ? $aYesOrNo2[$aThisCase['iIfRefundInvoice']] : '' ?>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>优先级：</label>
+
+                    <div class="col-sm-9">
+                        <?php echo !empty($aPriority[$aThisCase['iPriority']]) ? $aPriority[$aThisCase['iPriority']] : '' ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="history.back()">取消</button>
+            </div>
+        <?php
+        } ?>
+    </div>
+</div>
+
+<div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="matchModalLabel">受理问题维护</h4>
+            </div>
+            <div class="modal-body">
+                <form id="myImportform" method="post" action="<?php echo $sAcceptAddErrorUrl ?>">
+                    <div class="pbody clearfix">
+                        <div class="form-group clearfix">
+                            <label for="sExpressCode" class="col-sm-3 control-label"> <span class="tubiao">*</span>问题类别：</label>
+
+                            <div class="col-sm-9">
+                                <select name="iType" id="iType" class="form-control">
+                                    <option value="0">请选择</option>
+                                    <?php if (!empty($aErrorType)) {
+                                        unset($aErrorType[1]);
+                                        foreach ($aErrorType as $key => $value) {
+                                            ?>
+                                            <option <?php echo (!empty($aParam['iType']) && $aParam['iType'] == $key) ? 'selected' : '' ?>
+                                                value="<?php echo $key ?>"><?php echo $value ?></option>
+                                        <?php
+                                        }
+                                    } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="sRemark" class="col-sm-3 control-label"> 备注信息：</label>
+
+                            <div class="col-sm-9">
+                                <textarea class="form-control input-validate" name="sRemark" id="sRemark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="iType" value="1">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+
+        $("#myImportform").validate({
+            submitHandler: function (form) {
+                //判断必填是否已填
+                var iID = $('#iID').val();
+                var iType = $('#iType').val();
+                var sExpressCode = $('#sExpressCode').val();
+                var iInvoiceNum = $('#iInvoiceNum').val();
+                var iMoney = $('#iMoney').val();
+                var iIfMedicalTransfer = $("input[name='iIfMedicalTransfer']:checked").val();
+                var iIfPayDetail = $("input[name='iIfPayDetail']:checked").val();
+                var iIfRefundInvoice = $("input[name='iIfRefundInvoice']:checked").val();
+                var iPriority = $("input[name='iPriority']:checked").val();
+                var sRemark = $('#sRemark').text();
+
+
+                if (iType == 0) {
+                    alert('请选择问题类型');
+                    return false;
+                }
+                if (sExpressCode == '') {
+                    alert('请填写快递单号');
+                    return false;
+                }
+                if (iInvoiceNum == '') {
+                    alert('请填写发票张数');
+                    return false;
+                }
+                if (iMoney == '') {
+                    alert('请填写受理金额');
+                    return false;
+                }
+                var param = {
+                    iType: iType,
+                    sExpressCode: sExpressCode,
+                    iInvoiceNum: iInvoiceNum,
+                    iMoney: iMoney,
+                    iIfMedicalTransfer: iIfMedicalTransfer,
+                    iIfPayDetail: iIfPayDetail,
+                    iIfRefundInvoice: iIfRefundInvoice,
+                    iPriority: iPriority,
+                    iID: iID,
+                    sRemark: sRemark
+                };
+                $.post(form.action, param, function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+</script>

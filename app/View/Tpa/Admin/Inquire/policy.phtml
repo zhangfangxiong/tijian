@@ -1,0 +1,144 @@
+<style>
+    .sousuo_now {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .list-caozuo {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="pheader clearfix">雇员保单信息列表</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/tpa/admin/inquire/policy">
+        <div class="row sousuo_now">
+            <div class="form-group .col-xs-2">
+                人员姓名：
+                <input type="text" value="<?php echo isset($aParam['sEmployeeRealName']) ? $aParam['sEmployeeRealName'] : '' ?>"
+                       class="form-control input-sm" name="sEmployeeRealName">
+            </div>
+            <div class="form-group .col-xs-2">
+                人员编号：
+                <input type="text" value="<?php echo isset($aParam['sEmployeeCode']) ? $aParam['sEmployeeCode'] : '' ?>"
+                       class="form-control input-sm" name="sEmployeeCode">
+            </div>
+            <div class="form-group .col-xs-2">
+                证件证号：
+                <input type="text" value="<?php echo isset($aParam['sEmployeeIdentityCard']) ? $aParam['sEmployeeIdentityCard'] : '' ?>"
+                       class="form-control input-sm" name="sEmployeeIdentityCard">
+            </div>
+            <div class="form-group .col-xs-2">
+                所属公司：
+                <input type="text" value="<?php echo isset($aParam['sCompanyName']) ? $aParam['sCompanyName'] : '' ?>"
+                       class="form-control input-sm" name="sCompanyName">
+            </div>
+            <div class="form-group .col-xs-2">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="搜索">
+                <a class="btn btn-primary" href="">新增</a>
+                <a class="btn btn-primary" href="">导出</a>
+            </div>
+        </div>
+        <div class="row sousuo_now">
+            <div class="form-group .col-xs-2">
+                保单编号：
+                <input type="text" value="<?php echo isset($aParam['sInsuranceNum']) ? $aParam['sInsuranceNum'] : '' ?>"
+                       class="form-control input-sm" name="sInsuranceNum">
+            </div>
+            <div class="form-group .col-xs-2">
+                起保日期：
+                <input name="sSTimeFrom" autocomplete="off" class="laydatetime form-control" format="YYYY-MM-DD" validate="" type="text"
+                       value="<?php echo !empty($aParam['sSTimeFrom']) ? $aParam['sSTimeFrom'] : ''; ?>" class="form-control">
+                -
+                <input name="sSTimeTo" autocomplete="off" class="laydatetime form-control" format="YYYY-MM-DD" validate="" type="text"
+                       value="<?php echo !empty($aParam['sSTimeTo']) ? $aParam['sSTimeTo'] : ''; ?>" class="form-control">
+            </div>
+
+            <div class="form-group .col-xs-2">
+                终止日期：
+                <input name="sETimeFrom" autocomplete="off" class="laydatetime form-control" format="YYYY-MM-DD" validate="" type="text"
+                       value="<?php echo !empty($aParam['sETimeFrom']) ? $aParam['sETimeFrom'] : ''; ?>" class="form-control">
+                -
+                <input name="sETimeTo" autocomplete="off" class="laydatetime form-control" format="YYYY-MM-DD" validate="" type="text"
+                       value="<?php echo !empty($aParam['sETimeTo']) ? $aParam['sETimeTo'] : ''; ?>" class="form-control">
+            </div>
+
+            <div class="form-group .col-xs-2">
+                保单状态：
+                <select class="form-control input-sm" name="iStatus">
+                    <option value="0">请选择</option>
+                    <option
+                        value="2" <?php echo isset($aParam['iStatus']) && 2 == $aParam['iStatus'] ? 'selected' : '' ?>>
+                        当前保单
+                    </option>
+                    <option
+                        value="1" <?php echo isset($aParam['iStatus']) && 1 == $aParam['iStatus'] ? 'selected' : '' ?>>
+                        历史保单
+                    </option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="col-sm-1 text-center">保单编号</th>
+            <th>人员姓名</th>
+            <th class="text-center">人员编号</th>
+            <th class="text-center">证件号码</th>
+            <th class="text-center">所属公司</th>
+            <th class="text-center">保险公司</th>
+            <th class="text-center">投保公司</th>
+            <th class="text-center">起保日期</th>
+            <th class="text-center">终止日期</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">退保人</th>
+            <th class="text-center">浏览</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($aList['aList'] as $v) { ?>
+            <tr id="tr_<?php echo $v['iNewsID'] ?>">
+                <td class="col-sm-1 text-center"><?php echo $v['iNewsID'] ?></td>
+                <?php
+                if (isset($aCityCode[$v['iCityID']])) {
+                    $sNewCityCode = $aCityCode[$v['iCityID']];
+                } else {
+                    $sNewCityCode = $aCurrCity['sFullPinyin'];
+                }
+                ?>
+                <td><?php if ($v['iPublishStatus']) {?><a target="_blank" href="<?php echo 'http://'.Yaf_G::getConf('news', 'domain').'/'.$sNewCityCode.'/news/detail/'.$v['iNewsID']; ?>"><?php echo $v['sTitle'] ?></a><?php } else { echo $v['sTitle'] ; }?>
+                </td>
+                <td class="text-center"><?php echo @$aCategory[$v['iCategoryID']] ?></td>
+                <td class="text-center"><?php echo $v['sAuthor'] ?></td>
+                <td class="text-center"
+                    id="status_<?php echo $v['iNewsID'] ?>"><?php echo $v['iPublishStatus'] ? '已发布' : '未发布' ?></td>
+                <td class="text-center"><?php echo date('Y-m-d H:i', $v['iPublishTime']) ?></td>
+                <td class="text-center"><?php echo date('Y-m-d H:i', $v['iUpdateTime']) ?></td>
+                <td class="text-center">
+                    <a class="news_publish news_check_id_<?php echo $v['iNewsID'] ?>"
+                       href="<?php echo $v['iPublishStatus'] ? $sOffUrl : $sPublishUrl ?>?id=<?php echo $v['iNewsID'] ?>"
+                       data-type="<?php echo $v['iPublishStatus'] ?>"
+                       title="<?php echo $v['iPublishStatus'] ? '下架' : '上架' ?>">
+                        <img class="cric-icon"
+                             src="<?php echo $sStaticRoot . '/img/icon/' . ($v['iPublishStatus'] ? 'iconfont-zanting.png' : 'iconfont-tuiguangzhong.png') ?>">
+                    </a>
+                    <a href="<?= $sEditUrl ?>?id=<?php echo $v['iNewsID'] ?>" title="编辑"><i
+                            class="icon-pencil icon-large"></i></a>
+                    <a class="news_delete" href="<?= $sDelUrl ?>?id=<?php echo $v['iNewsID'] ?>" role="button"
+                       data-toggle="modal" title="删除"><i class="icon-trash icon-large"></i></a>
+                       <?php if(!empty($v['iPublishStatus'])) { ?>
+                    <a class="cp-btn" id="s_<?php echo $v['iNewsID'] ?>" data-id="s_<?php echo $v['iNewsID'] ?>" data-url="<?php echo $v['iPublishStatus'] ? 'http://'.Yaf_G::getConf('news', 'domain').Util_Page::getUrl('/{city}/news/detail/{iNewsID}', ['city' => $aCurrentCity['sFullPinyin'], 'iNewsID' => $v['iNewsID']]) : '';?>" href="javascript:void(0)"
+                       title="复制地址"><i
+                            class="icon-copy icon-large"></i></a>
+                       <?php } ?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+    <?php echo $aList['aPager'] ?>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<link rel="stylesheet" href="<?php echo $sStaticRoot ?>/jquery-ui/1.11.1/jquery-ui.min.css" type="text/css"/>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/jquery-ui/1.11.1/jquery-ui.min.js"></script>

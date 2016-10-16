@@ -1,0 +1,199 @@
+<div class="pbody clearfix">
+    <?php include('listheader.phtml'); ?>
+</div>
+<div class="pbody clearfix">
+    <?php if ($iType == 3) {
+        ?>
+        <form class="form-inline" role="form" method="post"
+              action="<?php echo !empty($sExpressUrl) ? $sExpressUrl : '' ?>?type=3">
+            <div>
+                <div class="col-sm-4 list-caozuo">
+                    <label>快递单号：</label>
+                    <input placeholder="请输入快递单号" type="text"
+                           value="<?php echo !empty($aParam['sExpressCode']) ? $aParam['sExpressCode'] : '' ?>"
+                           class="form-control" name="sExpressCode">
+                </div>
+                <div class="col-sm-4 list-caozuo">
+                    <label>操作员：</label>
+                    <input placeholder="请输入用户名" type="text"
+                           value="<?php echo !empty($aParam['iUserID']) ? $aParam['iUserID'] : '' ?>"
+                           class="form-control" name="iUserID">
+                </div>
+                <div class="col-sm-4 list-caozuo">
+                    <label>类型：</label>
+                    <select name="iType" id="iType" class="form-control">
+                        <option value="0">请选择</option>
+                        <?php if (!empty($aExpressType)) {
+                            foreach ($aExpressType as $key => $value) {
+                                ?>
+                                <option <?php echo (!empty($aParam['iType']) && $aParam['iType'] == $key) ? 'selected' : '' ?> value="<?php echo $key ?>"><?php echo $value ?></option>
+                            <?php
+                            }
+                        } ?>
+                    </select>
+                </div>
+
+                <div class="col-sm-4 list-caozuo">
+                    <label>打印日期：</label>
+                    <input format="YYYY-MM-DD" placeholder="请选择日期" type="text"
+                           value="<?php echo !empty($aParam['sDate']) ? $aParam['sDate'] : '' ?>"
+                           class="form-control laydatetime" name="sDate">
+                </div>
+                <div class="col-sm-4 list-caozuo">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <input type="button" id="print" class="btn btn-primary" value="重新打印">
+                </div>
+            </div>
+        </form>
+    <?php
+    } else {
+        ?>
+        <form id="myform" class="form-inline" role="form" method="post"
+              action="<?php echo !empty($sAddExpressUrl) ? $sAddExpressUrl : '' ?>">
+            <div>
+                <div class="col-sm-3 list-caozuo">
+                    <label>快递单号：</label>
+                    <input <?php echo (!empty($iType) && $iType == Model_Tpa_Express::TYPESELF) ? '' : 'disabled' ?>
+                        placeholder="<?php echo (!empty($iType) && $iType == Model_Tpa_Express::TYPESELF) ? '请输入快递单号' : '自动生成快递单号' ?>"
+                        type="text"
+                        value="<?php echo !empty($aParam['sExpressCode']) ? $aParam['sExpressCode'] : '' ?>"
+                        class="form-control" name="sExpressCode">
+                </div>
+                <div class="col-sm-3 list-caozuo">
+                    <label>日期：</label>
+                    <input format="YYYY-MM-DD" placeholder="请选择日期" type="text"
+                           value="<?php echo !empty($aParam['sDate']) ? $aParam['sDate'] : date("Y-m-d", time()) ?>"
+                           class="form-control laydatetime" name="sDate">
+                </div>
+
+                <div class="col-sm-3 list-caozuo">
+                    <label>备注：</label>
+                    <input placeholder="请输入备注" type="text"
+                           value="<?php echo !empty($aParam['sRemark']) ? $aParam['sRemark'] : '' ?>"
+                           class="form-control" name="sRemark">
+                </div>
+
+                <input type="hidden" name="type" value="<?php echo !empty($iType) ? $iType : '' ?>">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="收入">
+                <input type="button" id="print" class="btn btn-primary" value="打印">
+            </div>
+        </form>
+    <?php
+    } ?>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center"><input type="checkbox" id="expressall"></th>
+            <th class="text-center">快递单号</th>
+            <th class="text-center">收入日期</th>
+            <th class="text-center">操作员</th>
+            <th class="text-center">状态</th>
+            <th class="text-center" style="width:300px">备注</th>
+            <?php if ($iType == 3) {
+                ?>
+                <th class="text-center">类型</th>
+                <th class="text-center">打印时间</th>
+            <?php
+            } else {
+                ?>
+                <th class="text-center">操作</th>
+            <?php
+            } ?>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><input type="checkbox" class="expresslist"
+                                                   value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>">
+                    </td>
+                    <td class="text-center"><?php echo !empty($value['sExpressCode']) ? $value['sExpressCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sDate']) ? $value['sDate'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['iCreateUserID']) ? $value['iCreateUserID'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aStatus[$value['iStatus']]) ? $aStatus[$value['iStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sRemark']) ? $value['sRemark'] : '' ?></td>
+                    <?php if ($iType == 3) {
+                        ?>
+                        <td class="text-center"><?php echo !empty($aExpressType[$value['iType']]) ? $aExpressType[$value['iType']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iUpdateTime']) ? date('Y-m-d H:i:s', $value['iUpdateTime']) : '' ?></td>
+                    <?php
+                    } else {
+                        ?>
+                        <td class="text-center">
+                            <a class="delexpress" href="javascript:;"
+                               data-url="<?php echo !empty($sDelExpressUrl) ? $sDelExpressUrl : '' ?>?id=<?php echo $value['iAutoID'] ?>"
+                               title="删除"><i
+                                    class="fa fa-trash-o fa-large"></i></a>
+                        </td>
+                    <?php
+                    } ?>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script>
+    $(function () {
+        //收入快递
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        location.reload();
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+
+        //全选效果
+        $('#expressall').click(function () {
+            if ($(this).prop("checked") == false) {
+                $('.expresslist').prop("checked", false);
+            } else {
+                $('.expresslist').prop("checked", true);
+            }
+        });
+
+        $('.delexpress').click(function () {
+            var Url = $(this).data('url');
+            $.get(Url, function (ret) {
+                if (ret.status) {
+                    alert(ret.data);
+                    location.reload();
+                } else {
+                    alert(ret.data);
+                }
+            }, 'json');
+        });
+
+        $('#print').click(function () {
+            var ids = '';
+            var Url = '<?php echo $sPrintExpressUrl; ?>';
+            $('.expresslist:checked').each(function () {
+                ids += $(this).val() + ',';
+            });
+            if (!ids) {
+                alert('请先选择快递单');
+                return false;
+            } else {
+                ids = ids.substring(0, ids.length - 1);
+                $.get(Url, {id: ids}, function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        location.reload();
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+            }
+        });
+    });
+</script>

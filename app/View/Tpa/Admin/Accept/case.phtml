@@ -1,0 +1,147 @@
+<div class="pbody clearfix">
+    <?php include('listheader.phtml'); ?>
+</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-inline" role="form" method="post"
+          action="<?php echo !empty($sAcceptCaseUrl) ? $sAcceptCaseUrl : '' ?>">
+        <div>
+            <div class="col-sm-3 list-caozuo">
+                <label>快递单号：</label>
+                <input placeholder="请输入快递单号" type="text"
+                       value="<?php echo !empty($aParam['sExpressCode']) ? $aParam['sExpressCode'] : '' ?>"
+                       class="form-control" name="sExpressCode">
+            </div>
+            <div class="col-sm-3 list-caozuo">
+                <label>受理编号：</label>
+                <input placeholder="请输入受理编号" type="text"
+                       value="<?php echo !empty($aParam['sCode']) ? $aParam['sCode'] : '' ?>"
+                       class="form-control" name="sCode">
+            </div>
+            <div class="col-sm-3 list-caozuo">
+                <label>受理人：</label>
+                <select name="iCreateUserID" id="iCreateUserID" class="form-control" style="width: 200px;">
+                    <option value="0">请选择</option>
+                    <?php if (!empty($aUser)) {
+                        foreach ($aUser as $key => $value) {
+                            ?>
+                            <option <?php echo (!empty($aParam['iCreateUserID']) && $aParam['iCreateUserID'] == $value['iUserID']) ? 'selected' : '' ?>
+                                value="<?php echo $value['iUserID'] ?>"><?php echo $value['sUserName'] ?></option>
+                        <?php
+                        }
+                    } ?>
+                </select>
+            </div>
+
+            <div class="col-sm-3 list-caozuo">
+                <label>雇员编号：</label>
+                <input placeholder="请输入雇员编号" type="text"
+                       value="<?php echo !empty($aParam['sEmployeeCode']) ? $aParam['sEmployeeCode'] : '' ?>"
+                       class="form-control" name="sEmployeeCode">
+            </div>
+            <div class="col-sm-3 list-caozuo">
+                <label>雇员姓名：</label>
+                <input placeholder="请输入雇员姓名" type="text"
+                       value="<?php echo !empty($aParam['sEmployeeRealName']) ? $aParam['sEmployeeRealName'] : '' ?>"
+                       class="form-control" name="sEmployeeRealName">
+            </div>
+            <div class="col-sm-3 list-caozuo">
+                <label>证件号码：</label>
+                <input placeholder="请输入证件号码" type="text"
+                       value="<?php echo !empty($aParam['sEmployeeIdentityCard']) ? $aParam['sEmployeeIdentityCard'] : '' ?>"
+                       class="form-control" name="sEmployeeIdentityCard">
+            </div>
+            <div class="col-sm-5 list-caozuo">
+                <label>受理日期：</label>
+                <input format="YYYY-MM-DD" placeholder="请选择日期" type="text"
+                       value="<?php echo !empty($aParam['sStartDate']) ? $aParam['sStartDate'] : '' ?>"
+                       class="form-control laydatetime" name="sStartDate">-
+                <input format="YYYY-MM-DD" placeholder="请选择日期" type="text"
+                       value="<?php echo !empty($aParam['sEndDate']) ? $aParam['sEndDate'] : '' ?>"
+                       class="form-control laydatetime" name="sEndDate">
+            </div>
+            <div class="col-sm-3 list-caozuo">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="搜索">
+                <input type="button" id="print" class="btn btn-primary" value="打印批次号">
+            </div>
+
+        </div>
+    </form>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center"><input type="checkbox" id="expressall"></th>
+            <th class="text-center">快递单号</th>
+            <th class="text-center">受理编号</th>
+            <th class="text-center">雇员编号</th>
+            <th class="text-center">雇员姓名</th>
+            <th class="text-center">证件号</th>
+            <th class="text-center">受理发票数</th>
+            <th class="text-center">受理金额</th>
+            <th class="text-center">受理人</th>
+            <th class="text-center">受理时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><input type="checkbox" class="expresslist"
+                                                   value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>">
+                    </td>
+                    <td class="text-center"><?php echo !empty($value['sExpressCode']) ? $value['sExpressCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sCode']) ? $value['sCode'] : '' ?><span class="red">&nbsp;&nbsp;<?php echo $value['sPriority'] ? $value['sPriority'] : '' ?></span></td>
+                    <td class="text-center"><?php echo !empty($value['sEmployeeCode']) ? $value['sEmployeeCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sEmployeeRealName']) ? $value['sEmployeeRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sEmployeeIdentityCard']) ? $value['sEmployeeIdentityCard'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['iInvoiceNum']) ? $value['iInvoiceNum'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['iMoney']) ? $value['iMoney'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sCreateUserID']) ? $value['sCreateUserID'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['iCreateTime']) ? date('Y-m-d',$value['iCreateTime']) : '' ?></td>
+
+                    <td class="text-center">
+                        <a class="delexpress" href="<?php echo !empty($sAcceptViewCaseUrl) ? $sAcceptViewCaseUrl : '' ?>?id=<?php echo $value['iAutoID'] ?>" title="查看"><i
+                                class="fa fa-eye fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script>
+    $(function () {
+        //全选效果
+        $('#expressall').click(function () {
+            if ($(this).prop("checked") == false) {
+                $('.expresslist').prop("checked", false);
+            } else {
+                $('.expresslist').prop("checked", true);
+            }
+        });
+
+        $('#print').click(function () {
+            var ids = '';
+            var Url = '<?php echo $sAcceptPrintCaseUrl; ?>';
+            $('.expresslist:checked').each(function () {
+                ids += $(this).val() + ',';
+            });
+            if (!ids) {
+                alert('请先选择案件');
+                return false;
+            } else {
+                ids = ids.substring(0, ids.length - 1);
+                $.get(Url, {id: ids}, function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        location.reload();
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+            }
+        });
+    });
+</script>

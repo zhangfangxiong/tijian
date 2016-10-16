@@ -1,0 +1,77 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pheader clearfix">角色设定</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="<?php echo $sRoleListUrl; ?>">
+        <div class="row">
+
+            <div class="form-group col-sm-3">
+                <label>角色名称：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRoleName']) ? $aParam['sRoleName'] : '' ?>"
+                       class="form-control" name="sRoleName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <button class="btn btn-primary" id="user_add">添加角色</button>
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">角色名称</th>
+            <th class="text-center">是否有效</th>
+            <th class="text-center">创建人</th>
+            <th class="text-center">创建时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $aRole) {
+                ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($aRole['sRoleName']) ? $aRole['sRoleName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aStatus[$aRole['iStatus']]) ? $aStatus[$aRole['iStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aRole['sCreateUserName']) ? $aRole['sCreateUserName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aRole['iCreateTime']) ? date('Y-m-d H:i:s', $aRole['iCreateTime']) : '' ?></td>
+                    <td class="text-center">
+                        <a href="<?php echo $sRoleEditUrl . '/id/' . $aRole['iRoleID'] ?>" title="编辑"><i
+                                class="fa fa-pencil fa-large"></i></a>
+                        <?php if ($sHrRoleName != $aRole['sRoleName'] && $sSupplierRoleName != $aRole['sRoleName']) {
+                            ?>
+                            <a class="role_delete" href="javascript:;"
+                               data-url="<?php echo $sRoleDelUrl . '/id/' . $aRole['iRoleID'] ?>" title="删除"><i
+                                    class="fa fa-trash fa-large"></i></a>
+                        <?php
+                        } ?>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<script>
+    $('.role_delete').click(function () {
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该角色吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    $('#user_add').click(function () {
+        location.href = '<?php echo $sRoleAddUrl; ?>';
+        return false;
+    });
+</script>

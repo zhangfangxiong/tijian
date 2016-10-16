@@ -1,0 +1,205 @@
+<div class="pbody clearfix">
+    <?php include('listheader.phtml'); ?>
+</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-inline" role="form" method="post"
+          action="<?php echo !empty($sAcceptEmployeeUrl) ? $sAcceptEmployeeUrl : '' ?>">
+        <div>
+            <div class="col-sm-3 list-caozuo">
+                <label>雇员编号：</label>
+                <input
+                    placeholder="请输入雇员编号"
+                    type="text"
+                    value="<?php echo !empty($aParam['sCode']) ? $aParam['sCode'] : '' ?>"
+                    class="form-control" name="sCode">
+            </div>
+            <div class="col-sm-3 list-caozuo">
+                <label>姓名：</label>
+                <input
+                    placeholder="请输入雇员姓名"
+                    type="text"
+                    value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+                    class="form-control" name="sRealName">
+            </div>
+
+            <div class="col-sm-3 list-caozuo">
+                <label>证件号：</label>
+                <input placeholder="请输入雇员证件号" type="text"
+                       value="<?php echo !empty($aParam['sIdentityCard']) ? $aParam['sIdentityCard'] : '' ?>"
+                       class="form-control" name="sIdentityCard">
+            </div>
+            <input type="submit" id="formbtn" class="btn btn-primary" value="搜索">
+            <input data-toggle="modal" data-target="#matchModal" type="button" value="查无此人"
+                   class="btn btn-primary">
+        </div>
+    </form>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">雇员编号</th>
+            <th class="text-center">雇员姓名</th>
+            <th class="text-center">所属公司</th>
+            <th class="text-center">证件类型</th>
+            <th class="text-center">证件号码</th>
+            <th class="text-center">有无医保</th>
+            <th class="text-center">参保人身份类别</th>
+            <th class="text-center">参保身份</th>
+            <th class="text-center">主保险人</th>
+            <th class="text-center">受理</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($value['sCode']) ? $value['sCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sRealName']) ? $value['sRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sCompanyName']) ? $value['sCompanyName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sCardType']) ? $value['sCardType'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sIdentityCard']) ? $value['sIdentityCard'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sIsMedicalInsurance']) ? $value['sIsMedicalInsurance'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sType']) ? $value['sType'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sLevel']) ? $value['sLevel'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sParentName']) ? $value['sParentName'] : '' ?></td>
+                    <td class="text-center">
+                        <a class="delexpress" href="<?php echo !empty($sAcceptAddCaseUrl) ? $sAcceptAddCaseUrl : '' ?>?id=<?php echo $value['iAutoID'] ?>" title="受理"><i
+                                class="fa fa-hand-o-right fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="matchModalLabel">查无此人</h4>
+            </div>
+            <div class="modal-body">
+                <form id="myImportform" method="post" action="<?php echo $sAcceptAddErrorUrl ?>">
+                    <div class="pbody clearfix">
+                        <div class="form-group clearfix">
+                            <label for="sExpressCode" class="col-sm-3 control-label"> <span class="tubiao">*</span>快递单号：</label>
+
+                            <div class="col-sm-9">
+                                <input name="sExpressCode" id="sExpressCode" validate="!required:true" placeholder="请填写快递单号" type="text" value="" class="form-control input-validate">
+                                <span class="validate_checktip"></span>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="sEmployeeRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span>姓名：</label>
+
+                            <div class="col-sm-9">
+                                <input name="sEmployeeRealName" id="sEmployeeRealName" validate="!required:true" placeholder="请填写姓名" type="text" value="" class="form-control input-validate">
+                                <span class="validate_checktip"></span>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>手机号码：</label>
+
+                            <div class="col-sm-9">
+                                <input name="sMobile" id="sMobile" validate="!mobile:true" placeholder="请填写手机号码" type="text" value="" class="form-control input-validate">
+                                <span class="validate_checktip"></span>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="sEmployeeIdentityCard" class="col-sm-3 control-label"> <span class="tubiao">*</span>身份证：</label>
+
+                            <div class="col-sm-9">
+                                <input name="sEmployeeIdentityCard" id="sEmployeeIdentityCard" validate="!required:true" placeholder="请填写身份证" type="text" value="" class="form-control input-validate">
+                                <span class="validate_checktip"></span>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="iInvoiceNum" class="col-sm-3 control-label"> <span class="tubiao">*</span>发票数量：</label>
+
+                            <div class="col-sm-9">
+                                <input name="iInvoiceNum" id="iInvoiceNum" validate="!float:true" placeholder="请填写发票数量" type="text" value="" class="form-control input-validate">
+                                <span class="validate_checktip"></span>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="sRemark" class="col-sm-3 control-label"> 备注信息：</label>
+
+                            <div class="col-sm-9">
+                                <textarea class="form-control input-validate" name="sRemark" id="sRemark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="iType" value="1">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script>
+    $(function () {
+
+        $("#myImportform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        $('#matchModal').modal('hide');
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+
+        //全选效果
+        $('#expressall').click(function () {
+            if ($(this).prop("checked") == false) {
+                $('.expresslist').prop("checked", false);
+            } else {
+                $('.expresslist').prop("checked", true);
+            }
+        });
+
+        $('.delexpress').click(function () {
+            var Url = $(this).data('url');
+            $.get(Url, function (ret) {
+                if (ret.status) {
+                    alert(ret.data);
+                    location.reload();
+                } else {
+                    alert(ret.data);
+                }
+            }, 'json');
+        });
+
+        $('#print').click(function () {
+            var ids = '';
+            var Url = '<?php echo $sPrintExpressUrl; ?>';
+            $('.expresslist:checked').each(function () {
+                ids += $(this).val() + ',';
+            });
+            if (!ids) {
+                alert('请先选择快递单');
+                return false;
+            } else {
+                ids = ids.substring(0, ids.length - 1);
+                $.get(Url, {id: ids}, function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        location.reload();
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+            }
+        });
+    });
+</script>
