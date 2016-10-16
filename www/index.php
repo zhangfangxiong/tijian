@@ -3,7 +3,7 @@ ini_set('date.timezone','Asia/Shanghai');
 
 define('ENV_CHANNEL', 'www');
 define('ENV_DOMAIN', $_SERVER['HTTP_HOST']);
-if ($_SERVER['SERVER_ADDR'] == '120.24.78.234') {
+if ($_SERVER['SERVER_ADDR'] == '115.28.173.226') {
     define('ENV_SCENE', 'dev');
 } else {
     define('ENV_SCENE', 'ga');
