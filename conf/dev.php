@@ -1,36 +1,36 @@
 <?php
 $config['database']['default']['master'] = array(
-    'dsn' => 'mysql:host=127.0.0.1;dbname=51joying',
-    'user' => 'root',
-    'pass' => 'xjc.123',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=tijian',
+    'user' => 'zfx',
+    'pass' => '11111',
     'init' => array(
         'SET CHARACTER SET utf8',
         'SET NAMES utf8'
     )
 );
 $config['database']['default']['salve'] = array(
-    'dsn' => 'mysql:host=127.0.0.1;dbname=51joying',
-    'user' => 'root',
-    'pass' => 'xjc.123',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=tijian',
+    'user' => 'zfx',
+    'pass' => '111111',
     'init' => array(
         'SET CHARACTER SET utf8',
         'SET NAMES utf8'
     )
 );
 
-$config['database']['51joying']['master'] = array(
-    'dsn' => 'mysql:host=127.0.0.1;dbname=51joying',
-    'user' => 'root',
-    'pass' => 'xjc.123',
+$config['database']['tijian']['master'] = array(
+    'dsn' => 'mysql:host=127.0.0.1;dbname=tijian',
+    'user' => 'zfx',
+    'pass' => '111111',
     'init' => array(
         'SET CHARACTER SET utf8',
         'SET NAMES utf8'
     )
 );
-$config['database']['51joying']['salve'] = array(
-    'dsn' => 'mysql:host=127.0.0.1;dbname=51joying',
-    'user' => 'root',
-    'pass' => 'xjc.123',
+$config['database']['tijian']['salve'] = array(
+    'dsn' => 'mysql:host=127.0.0.1;dbname=tijian',
+    'user' => 'zfx',
+    'pass' => '111111',
     'init' => array(
         'SET CHARACTER SET utf8',
         'SET NAMES utf8'
@@ -39,8 +39,8 @@ $config['database']['51joying']['salve'] = array(
 
 $config['database']['tpa']['master'] = array(
     'dsn' => 'mysql:host=127.0.0.1;dbname=tpa',
-    'user' => 'root',
-    'pass' => 'xjc.123',
+    'user' => 'zfx',
+    'pass' => '111111',
     'init' => array(
         'SET CHARACTER SET utf8',
         'SET NAMES utf8'
@@ -48,8 +48,8 @@ $config['database']['tpa']['master'] = array(
 );
 $config['database']['tpa']['salve'] = array(
     'dsn' => 'mysql:host=127.0.0.1;dbname=tpa',
-    'user' => 'root',
-    'pass' => 'xjc.123',
+    'user' => 'zfx',
+    'pass' => '111111',
     'init' => array(
         'SET CHARACTER SET utf8',
         'SET NAMES utf8'

@@ -9,13 +9,6 @@ abstract class Yaf_Request_Abstract
 {
 
     /**
-     * Project
-     *
-     * @var string
-     */
-    protected $_project;
-
-    /**
      * Module
      *
      * @var string
@@ -194,11 +187,6 @@ abstract class Yaf_Request_Abstract
     public function getModuleName ()
     {
         return $this->_module;
-    }
-
-    public function getProjectName ()
-    {
-        return $this->_project;
     }
 
     /**
@@ -443,25 +431,6 @@ abstract class Yaf_Request_Abstract
         
         return $this;
     }
-
-    /**
-     * Set the project name to use
-     *
-     * @param string $value
-     *
-     * @return Yaf_Request_Abstract
-     */
-    public function setProjectName ($project)
-    {
-        if (! is_string($project)) {
-            throw new Yaf_Exception('Expect a string project name');
-        }
-        $this->_project = $project;
-
-        return $this;
-    }
-
-
 
     /**
      * Set an action parameter

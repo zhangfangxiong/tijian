@@ -15,8 +15,6 @@ class Yaf_G
 
     const YAF_ROUTER_DEFAULT_MODULE = 'Index';
 
-    const YAF_ROUTER_DEFAULT_PROJECT = 'Index';
-
     /**
      * 加载过的配制文件
      *
@@ -154,7 +152,6 @@ class Yaf_G
         $module = self::YAF_ROUTER_DEFAULT_MODULE;
         $controller = self::YAF_ROUTER_DEFAULT_CONTROLLER;
         $action = self::YAF_ROUTER_DEFAULT_ACTION;
-        $project = self::YAF_ROUTER_DEFAULT_PROJECT;
         
         // 去掉参数，在$_GET里能获取到
         $aUrl = parse_url($uri);
@@ -162,12 +159,9 @@ class Yaf_G
         $path = explode('/', trim($path, '/'));
         $root = self::getControllerPath();
         if (! empty($path[0]) && is_dir($root . '/' . ucfirst($path[0]))) {
-            $project = ucfirst(array_shift($path));
-        }
-        if (! empty($path[0]) && is_dir($root . '/' .$project.'/'. ucfirst($path[0]))) {
             $module = ucfirst(array_shift($path));
         }
-        if (! empty($path[0]) && file_exists($root . '/' .$project.'/'. $module . '/' . ucfirst($path[0]) . '.php')) {
+        if (! empty($path[0]) && file_exists($root . '/' . $module . '/' . ucfirst($path[0]) . '.php')) {
             $controller = ucfirst(array_shift($path));
         }
         if (! empty($path[0])) {
@@ -197,16 +191,14 @@ class Yaf_G
         /*
          * if (isset($aUrl['query'])) { parse_str($aUrl['query'], $aParam); foreach ($aParam as $k => $v) { $rest[] = $k; $rest[] = $v; } } if (count($rest) % 2 == 1) { $rest[] = ''; }
          */
-        $aData = array(
+        
+        return array(
             'path' => $root,
-            'project' => $project,
             'module' => $module,
             'controller' => $controller,
             'action' => $action,
             'query' => $query
         );
-        //print_r($aData);die;
-        return $aData;
     }
 
     /**
@@ -219,16 +211,13 @@ class Yaf_G
     {
         $aMca = explode('_', $sRoute);
         $sUrl = '';
-        if ($bFullPath || $aMca[1] != self::YAF_ROUTER_DEFAULT_PROJECT) {
+        if ($bFullPath || $aMca[1] != self::YAF_ROUTER_DEFAULT_MODULE) {
             $sUrl .= '/' . strtolower($aMca[1][0]) . substr($aMca[1], 1);
         }
-        if ($bFullPath || $aMca[2] != self::YAF_ROUTER_DEFAULT_MODULE) {
+        if ($bFullPath || $aMca[2] != self::YAF_ROUTER_DEFAULT_CONTROLLER) {
             $sUrl .= '/' . strtolower($aMca[2][0]) . substr($aMca[2], 1);
         }
-        if ($bFullPath || $aMca[3] != self::YAF_ROUTER_DEFAULT_CONTROLLER) {
-            $sUrl .= '/' . strtolower($aMca[3][0]) . substr($aMca[3], 1);
-        }
-        $sUrl .= '/' . $aMca[4];
+        $sUrl .= '/' . $aMca[3];
         return $sUrl;
     }
 
@@ -252,7 +241,7 @@ class Yaf_G
             $uri = $oRequest->getRequestUri();
         }
         $aRoute = self::getRoute($uri);
-        $url = self::routeToUrl('Controller_' . $aRoute['project'].'_'.$aRoute['module'] . '_' . $aRoute['controller'] . '_' . $aRoute['action'], $bFullPath);
+        $url = self::routeToUrl('Controller_' . $aRoute['module'] . '_' . $aRoute['controller'] . '_' . $aRoute['action'], $bFullPath);
         if ($postfix == null) {
             $delimiter = '/';
         } else {

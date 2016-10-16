@@ -301,11 +301,6 @@ class Yaf_Dispatcher
     {
         $request->setDispatched(true);
         $app = $this->getApplication();
-        $project = $request->getProjectName();
-        if (empty($project)) {
-            throw new Yaf_Exception('Unexcepted an empty project name');
-            return false;
-        }
         $module = $request->getModuleName();
         if (empty($module)) {
             throw new Yaf_Exception('Unexcepted an empty module name');
@@ -316,7 +311,7 @@ class Yaf_Dispatcher
             throw new Yaf_Exception('Unexcepted an empty controller name');
             return false;
         }
-        $className = $this->getController($project,$module, $controllerName);
+        $className = $this->getController($module, $controllerName);
         if (! $className) {
             return false;
         }
@@ -363,20 +358,14 @@ class Yaf_Dispatcher
         return $paramsRef;
     }
 
-    private function getController ($project,$module, $controller)
+    private function getController ($module, $controller)
     {
-        $classname = Yaf_G::YAF_CONTROLLER_DIRECTORY_NAME. '_' . ucfirst($project) . '_' . ucfirst($module) . '_' . ucfirst($controller);
+        $classname = Yaf_G::YAF_CONTROLLER_DIRECTORY_NAME . '_' . ucfirst($module) . '_' . ucfirst($controller);
         return $classname;
     }
 
     private function _fixDefault (Yaf_Request_Abstract $request)
     {
-        $project = $request->getProjectName();
-        if (empty($project) || ! is_string($project)) {
-            $request->setProjectName(Yaf_G::YAF_ROUTER_DEFAULT_PROJECT);
-        } else {
-            $request->setProjectName(ucfirst($project));
-        }
         $module = $request->getModuleName();
         if (empty($module) || ! is_string($module)) {
             $request->setModuleName(Yaf_G::YAF_ROUTER_DEFAULT_MODULE);

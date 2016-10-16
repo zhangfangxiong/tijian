@@ -420,7 +420,7 @@ abstract class Yaf_Controller
             if ($controller != null) {
                 $controller = str_replace('_', DIRECTORY_SEPARATOR, ($controller));
             }
-            $script = $request->getProjectName() . DIRECTORY_SEPARATOR . $request->getModuleName() . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $script;
+            $script = $request->getModuleName() . DIRECTORY_SEPARATOR . $controller . DIRECTORY_SEPARATOR . $script;
         }
         $script = trim($script, DIRECTORY_SEPARATOR);
         $script = Yaf_G::getViewPath() . DIRECTORY_SEPARATOR . $script;

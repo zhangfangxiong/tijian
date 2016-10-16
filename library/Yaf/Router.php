@@ -44,7 +44,6 @@ class Yaf_Router
 
         //取得Route
         $aRoute = Yaf_G::getRoute($path);
-        $request->setProjectName($aRoute['project']);
         $request->setModuleName($aRoute['module']);
         $request->setControllerName($aRoute['controller']);
         $request->setActionName($aRoute['action']);
